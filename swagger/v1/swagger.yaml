@@ -1,0 +1,77 @@
+---
+swagger: '2.0'
+openapi: 2.0.0
+info:
+  title: Book Appointment API
+  version: v1
+  description: Api version 1
+paths:
+  "/doctors":
+    get:
+      summary: Retrieves a list of doctors
+      tags:
+      - User
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: returns list of doctors
+          schema:
+            type: array
+            items:
+              "$ref": "#/definitions/doctor"
+            required:
+            - id
+            - username
+            - email
+            - firstname
+            - lastname
+            - city
+  "/doctors/{id}":
+    get:
+      summary: Retrieves a doctor
+      tags:
+      - User
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        schema:
+          type: integer
+        description: pass an id for the doctor
+        required: true
+      responses:
+        '200':
+          description: doctor found
+          schema:
+            "$ref": "#/definitions/doctor"
+            required:
+            - id
+            - username
+            - email
+            - firstname
+            - lastname
+            - city
+basePath: "/api/v1"
+definitions:
+  doctor:
+    type: object
+    properties:
+      id:
+        type: integer
+      firstname:
+        type: string
+      lastname:
+        type: string
+      email:
+        type: string
+      username:
+        type: string
+      city:
+        type: string
+  not_found_error:
+    type: object
+    properties:
+      message:
+        type: string

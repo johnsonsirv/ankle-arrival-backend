@@ -5,7 +5,6 @@ RSpec.configure do |config|
   # NOTE: If you're using the rswag-api to serve API descriptions, you'll need
   # to ensure that it's configured to serve Swagger from the same folder
   config.swagger_root = Rails.root.join('swagger').to_s
-
   # Define one or more Swagger documents and provide global metadata for each one
   # When you run the 'rswag:specs:swaggerize' rake task, the complete Swagger will
   # be generated at the provided relative path under swagger_root
@@ -14,12 +13,36 @@ RSpec.configure do |config|
   # the root example_group in your specs, e.g. describe '...', swagger_doc: 'v2/swagger.json'
   config.swagger_docs = {
     'v1/swagger.yaml' => {
-      openapi: '3.0.1',
+      swagger: '2.0',
+      openapi: '2.0.0',
       info: {
-        title: 'API V1',
-        version: 'v1'
+        title: 'Book Appointment API',
+        version: 'v1',
+        description: 'Api version 1'
       },
-      paths: {}
+      paths: {},
+      basePath: '/api/v1',
+      definitions: {
+        doctor: {
+          type: 'object',
+          properties: {
+            id: { type: 'integer' },
+            firstname: { type: 'string' },
+            lastname: { type: 'string' },
+            email: { type: 'string' },
+            username: { type: 'string' },
+            city: { type: 'string' }
+          }
+        },
+        not_found_error: {
+          type: 'object',
+          properties: {
+            message: {
+              type: 'string'
+            }
+          }
+        }
+      }
     }
   }
 
@@ -28,4 +51,5 @@ RSpec.configure do |config|
   # the key, this may want to be changed to avoid putting yaml in json files.
   # Defaults to json. Accepts ':json' and ':yaml'.
   config.swagger_format = :yaml
+  config.swagger_dry_run = false
 end

@@ -1,73 +1,53 @@
 require 'rails_helper'
-# require "#{::Rails.root}/spec/support/request_spec_helper.rb"
+require 'swagger_helper'
 
-RSpec.describe 'Api::V1::Doctors', type: :request do
+describe 'Api::V1::Doctors API', type: :request, swagger_doc: 'v1/swagger.yaml' do
   
   let!(:doctors) { create_list(:doctor, 10) }
   let(:doctor_id) { doctors.first.id }
-  let(:api_url) { '/api/v1/'}
-  
-  describe 'GET /api/v1/doctors' do
-    before { get "#{api_url}/doctors" }
-    it 'return doctors' do
-      expect(json).not_to be_empty
-      expect(json.size).to eq(10)
-    end
-    it 'returns status code 200' do
-      expect(response).to have_http_status(200)
+  path '/doctors' do
+    get 'Retrieves a list of doctors' do
+      tags   'User'
+      produces 'application/json'
+      # parameter name: :city, in: :query, schema: { type: :string },
+      # description: 'pass an optional city for looking up doctors in a city'
+      # parameter name: :offset, in: :query, schema: { type: :integer },
+      # description: 'optional number of pages to skip for pagination'
+      # parameter name: :limit, in: :query, schema: { type: :integer },
+      # description: 'maximum number of records to return',
+      # minimum: 0,
+      # maximum: 10
+      
+      response 200, 'returns list of doctors' do
+        schema type: 'array',
+          items: { '$ref' => '#/definitions/doctor' },
+          required: [ 'id', 'username', 'email', 'firstname', 'lastname', 'city' ]
+        run_test! do |response|
+          expect(json).not_to be_empty
+          expect(json.size).to eq(10)
+        end
+      end
+            
     end
   end
   
-  describe 'GET /api/v1/doctors/:id' do
-    before { get "#{api_url}/doctors/#{doctor_id}" }
-    
-     context 'when the record exists' do
-        it 'returns doctor information' do
+  path '/doctors/{id}' do
+    get 'Retrieves a doctor' do
+      tags   'User'
+      produces 'application/json'
+      parameter name: :id, in: :path, schema: { type: :integer },
+      description: 'pass an id for the doctor', required: true
+      let (:id) { doctor_id }
+      response 200, 'doctor found' do
+        schema '$ref' => '#/definitions/doctor',
+          required: [ 'id', 'username', 'email', 'firstname', 'lastname', 'city' ]
+        run_test! do |response|
           expect(json).not_to be_empty
           expect(json['id']).to eq(doctor_id)
         end
-        it 'return status code 200' do
-          expect(response).to have_http_status(200)
-        end
-     end
-     
-     context 'when the record does not exists' do
-       let(:doctor_id) { 50 }
-       
-        it 'returns status code 400' do
-          expect(response).to have_http_status(400)
-        end
-        it 'returns a not found message' do
-          expect(response.body).to match(/record not found/i)
-        end
-     end
-  end
-  
-   describe 'GET /api/v1/doctors/:id/appointments' do
-    let!(:appointments) { create_list(:appointment, 10, { doctor: doctors.first }) }
-    before { get "#{api_url}/doctors/#{doctor_id}/appointments" }
-     
-     context 'when the record exists' do
-        it 'returns doctor\'s appointments' do
-          expect(json).not_to be_empty
-          expect(json[0]['doctor_firstname']).to eq(doctors.first.firstname)
-          expect(json[0]['username']).not_to be_empty
-        end
-        it 'return status code 200' do
-          expect(response).to have_http_status(200)
-        end
-     end
-     
-     context 'when the record does not exists' do
-       let(:doctor_id) { 50 }
-       
-        it 'returns status code 400' do
-          expect(response).to have_http_status(400)
-        end
-        it 'returns a not found message' do
-          expect(response.body).to match(/record not found/i)
-        end
-     end
+      end
+            
+    end
   end
   
 end

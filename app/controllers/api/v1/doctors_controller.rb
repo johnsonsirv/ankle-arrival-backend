@@ -13,9 +13,18 @@ class Api::V1::DoctorsController < ApplicationController
     json_response(@doctor)
   end
   
+  # GET /api/v1/doctors/:id/appointments
   def appointments
     json_response(@doctor_with_appointment.all_appointments)
   end
+  
+  # GET /api/v1/doctors/:id/appointments/:id
+  def appointment
+    json_response(@doctor_with_appointment
+      .all_appointments
+      .find(params[:id]))
+  end
+
 
   # POST /api/v1/doctors
   def create
