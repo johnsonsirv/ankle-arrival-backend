@@ -5,7 +5,7 @@ module Response
   end
   
   def record_invalid
-    { message: 'record invalid', status_code: :unprocessable_entity }
+    { message: 'invalid request', status_code: :unprocessable_entity }
   end
   
   def json_response(object, status = :ok)

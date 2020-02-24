@@ -13,6 +13,8 @@ Rails.application.routes.draw do
         get '/appointments', to: 'users#appointments'
         get '/appointments/:id', to: 'users#appointment'
       end
+      
+      resources :appointments, only: [:create, :update]
     end
   end
 end

@@ -6,135 +6,48 @@ info:
   description: This API is a backend for a tablet web-app that will enable sports
     athletes(users) to book an appointment with a physiotherapist doctor
 paths:
-  "/doctors":
-    get:
-      summary: Retrieves a list of doctors
+  "/appointments":
+    post:
+      summary: Create a new appointment
       tags:
       - User
-      produces:
+      consumes:
       - application/json
+      parameters:
+      - name: appointment
+        in: body
+        schema:
+          user_id:
+            type: integer
+          doctor_id:
+            type: integer
+          description:
+            type: string
+          appointment_date:
+            type: string
+          appointment_time:
+            type: string
+        description: a new appointment param to be added
+        required:
+        - user_id
+        - doctor_id
+        - description
+        - appointment_date
+        - appointment_time
       responses:
         '200':
-          description: returns list of doctors
+          description: new appointment created
           examples:
             application/json:
-              id: 1
-              firstname: Jerry
-              lastname: Christian
-              email: jerry.c@bco.com
-              username: jerryC123
-              city: LA
+              user_id: 1
+              doctor_id: 2
+              description: This is my first appointment
+              appointment_date: '2020-03-24'
+              appointment_time: '2020-02-24 17:48:44 +0000'
+        '422':
+          description: invalid request
           schema:
-            type: array
-            items:
-              "$ref": "#/definitions/doctor"
-            required:
-            - id
-            - username
-            - email
-            - firstname
-            - lastname
-            - city
-  "/doctors/{id}":
-    get:
-      summary: Retrieves a doctor
-      tags:
-      - User
-      produces:
-      - application/json
-      parameters:
-      - name: id
-        in: path
-        type: integer
-        description: pass an id for the doctor
-        required: true
-      responses:
-        '200':
-          description: doctor found
-          schema:
-            "$ref": "#/definitions/doctor"
-            required:
-            - id
-            - username
-            - email
-            - firstname
-            - lastname
-            - city
-        '400':
-          description: record not found
-          schema:
-            "$ref": "#/definitions/not_found_error"
-  "/doctors/{doctor_id}/appointments":
-    get:
-      summary: Retrieves a list of doctor's appointments
-      tags:
-      - Doctor
-      produces:
-      - application/json
-      parameters:
-      - name: doctor_id
-        in: path
-        type: integer
-        description: retrieve all appointments belonging to this id
-        required: true
-      responses:
-        '200':
-          description: doctor's appointments found
-          schema:
-            type: array
-            items:
-              "$ref": "#/definitions/appointment"
-            required:
-            - id
-            - username
-            - email
-            - doctor_firstname
-            - doctor_lastname
-            - doctor_email
-            - date_of_appointment
-            - time_of_appointment
-            - description
-        '400':
-          description: record not found
-          schema:
-            "$ref": "#/definitions/not_found_error"
-  "/doctors/{doctor_id}/appointments/{id}":
-    get:
-      summary: Retrieves a single doctor's appointment
-      tags:
-      - Doctor
-      produces:
-      - application/json
-      parameters:
-      - name: doctor_id
-        in: path
-        type: integer
-        description: the doctor's id
-        required: true
-      - name: id
-        in: path
-        type: integer
-        description: retrieve a single appointment with id belonging to doctor
-        required: true
-      responses:
-        '200':
-          description: doctor's appointment found
-          schema:
-            "$ref": "#/definitions/appointment"
-            required:
-            - id
-            - username
-            - email
-            - doctor_firstname
-            - doctor_lastname
-            - doctor_email
-            - date_of_appointment
-            - time_of_appointment
-            - description
-        '400':
-          description: record not found
-          schema:
-            "$ref": "#/definitions/not_found_error"
+            "$ref": "#/definitions/invalid_request_error"
 basePath: "/api/v1"
 definitions:
   doctor:
@@ -174,6 +87,11 @@ definitions:
       description:
         type: string
   not_found_error:
+    type: object
+    properties:
+      message:
+        type: string
+  invalid_request_error:
     type: object
     properties:
       message:

@@ -54,6 +54,14 @@ RSpec.configure do |config|
               type: 'string'
             }
           }
+        },
+        invalid_request_error: {
+          type: 'object',
+          properties: {
+            message: {
+              type: 'string'
+            }
+          }
         }
       }
     }
