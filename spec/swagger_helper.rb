@@ -14,11 +14,10 @@ RSpec.configure do |config|
   config.swagger_docs = {
     'v1/swagger.yaml' => {
       swagger: '2.0',
-      openapi: '2.0.0',
       info: {
         title: 'Book Appointment API',
         version: 'v1',
-        description: 'Api version 1'
+        description: 'This API is a backend for a tablet web-app that will enable sports athletes(users) to book an appointment with a physiotherapist doctor'
       },
       paths: {},
       basePath: '/api/v1',
@@ -32,6 +31,20 @@ RSpec.configure do |config|
             email: { type: 'string' },
             username: { type: 'string' },
             city: { type: 'string' }
+          }
+        },
+        appointment: {
+          type: 'object',
+          properties: {
+            id: { type: 'integer' },
+            doctor_firstname: { type: 'string' },
+            doctor_lastname: { type: 'string' },
+            doctor_email: { type: 'string' },
+            username: { type: 'string' },
+            email: { type: 'string' },
+            date_of_appointment: { type: 'string' },
+            time_of_appointment: { type: 'string' },
+            description: { type: 'string' }
           }
         },
         not_found_error: {

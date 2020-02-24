@@ -4,21 +4,21 @@ require 'swagger_helper'
 describe 'Api::V1::Doctors API', type: :request, swagger_doc: 'v1/swagger.yaml' do
   
   let!(:doctors) { create_list(:doctor, 10) }
-  let(:doctor_id) { doctors.first.id }
+  let(:first_doctor_id) { doctors.first.id }
+
   path '/doctors' do
     get 'Retrieves a list of doctors' do
       tags   'User'
-      produces 'application/json'
-      # parameter name: :city, in: :query, schema: { type: :string },
-      # description: 'pass an optional city for looking up doctors in a city'
-      # parameter name: :offset, in: :query, schema: { type: :integer },
-      # description: 'optional number of pages to skip for pagination'
-      # parameter name: :limit, in: :query, schema: { type: :integer },
-      # description: 'maximum number of records to return',
-      # minimum: 0,
-      # maximum: 10
-      
+      produces 'application/json'      
       response 200, 'returns list of doctors' do
+        examples 'application/json' => {
+          id: 1,
+          firstname: 'Jerry',
+          lastname: 'Christian',
+          email: 'jerry.c@bco.com',
+          username: 'jerryC123',
+          city: 'LA'
+        }
         schema type: 'array',
           items: { '$ref' => '#/definitions/doctor' },
           required: [ 'id', 'username', 'email', 'firstname', 'lastname', 'city' ]
@@ -35,15 +35,104 @@ describe 'Api::V1::Doctors API', type: :request, swagger_doc: 'v1/swagger.yaml' 
     get 'Retrieves a doctor' do
       tags   'User'
       produces 'application/json'
-      parameter name: :id, in: :path, schema: { type: :integer },
+      parameter name: :id, in: :path, type: :integer,
       description: 'pass an id for the doctor', required: true
-      let (:id) { doctor_id }
+
       response 200, 'doctor found' do
+        let (:id) { first_doctor_id }
         schema '$ref' => '#/definitions/doctor',
           required: [ 'id', 'username', 'email', 'firstname', 'lastname', 'city' ]
         run_test! do |response|
           expect(json).not_to be_empty
-          expect(json['id']).to eq(doctor_id)
+          expect(json['id']).to eq(first_doctor_id)
+        end
+      end
+      
+      response 400, 'record not found' do
+        let (:id) { 50 }
+        schema '$ref' => '#/definitions/not_found_error'
+        run_test! do |response|
+           expect(response.body).to match(/record not found/i)
+        end
+      end
+            
+    end
+  end
+  
+  path '/doctors/{doctor_id}/appointments' do
+    get 'Retrieves a list of doctor\'s appointments' do
+      tags   'Doctor'
+      produces 'application/json'
+      parameter name: :doctor_id, in: :path, type: :integer,
+      description: 'retrieve all appointments belonging to this id',
+      required: true
+      
+       let!(:appointments) { create_list(:appointment, 10,
+        { doctor: doctors.first }) }
+
+      response 200, 'doctor\'s appointments found' do
+        let(:doctor_id) { first_doctor_id }
+
+        schema type: 'array',
+          items: { '$ref' => '#/definitions/appointment' },
+          required: [ 'id', 'username', 'email', 'doctor_firstname',
+            'doctor_lastname', 'doctor_email', 'date_of_appointment',
+            'time_of_appointment', 'description']
+        
+        run_test! do |response|
+          expect(json).not_to be_empty
+          expect(json[0]['doctor_firstname']).to eq(doctors.first.firstname)
+          expect(json[0]['username']).not_to be_empty
+        end
+      end
+      
+      response 400, 'record not found' do
+        let (:doctor_id) { 50 }
+        schema '$ref' => '#/definitions/not_found_error'
+        run_test! do |response|
+           expect(response.body).to match(/record not found/i)
+        end
+      end
+            
+    end
+  end
+  
+  path '/doctors/{doctor_id}/appointments/{id}' do
+    get 'Retrieves a single doctor\'s appointment' do
+      tags   'Doctor'
+      produces 'application/json'
+      parameter name: :doctor_id, in: :path, type: :integer,
+      description: 'the doctor\'s id',
+      required: true
+      parameter name: :id, in: :path, type: :integer,
+      description: 'retrieve a single appointment with id belonging to doctor',
+      required: true
+      
+      let!(:appointments) { create_list(:appointment, 10,
+        { doctor: doctors.first }) }
+      let(:appointment_id) { appointments.first.id }
+      let(:doctor_id) { first_doctor_id }
+      let(:id) { appointment_id }
+
+      response 200, 'doctor\'s appointment found' do
+       
+        schema '$ref' => '#/definitions/appointment',
+          required: [ 'id', 'username', 'email', 'doctor_firstname',
+            'doctor_lastname', 'doctor_email', 'date_of_appointment',
+            'time_of_appointment', 'description']
+        
+        run_test! do |response|
+          expect(json).not_to be_empty
+          expect(json['doctor_firstname']).to eq(doctors.first.firstname)
+          expect(json['username']).not_to be_empty
+        end
+      end
+      
+      response 400, 'record not found' do
+        let (:doctor_id) { 50 }
+        schema '$ref' => '#/definitions/not_found_error'
+        run_test! do |response|
+           expect(response.body).to match(/record not found/i)
         end
       end
             

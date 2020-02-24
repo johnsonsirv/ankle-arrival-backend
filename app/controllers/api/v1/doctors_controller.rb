@@ -1,11 +1,10 @@
 class Api::V1::DoctorsController < ApplicationController
-  before_action :get_doctor, only: [:show, :update, :destroy]
+  before_action :get_doctor, only: [:show]
   before_action :get_appointment, only: [:appointments, :appointment]
 
   # GET /api/v1/doctors
   def index
-    @doctors = Doctor.all
-    json_response(@doctors)
+    json_response(Doctor.all)
   end
 
   # GET /api/v1/doctors/1
@@ -13,32 +12,18 @@ class Api::V1::DoctorsController < ApplicationController
     json_response(@doctor)
   end
   
-  # GET /api/v1/doctors/:id/appointments
+  # GET /api/v1/doctors/1/appointments
   def appointments
     json_response(@doctor_with_appointment.all_appointments)
   end
   
-  # GET /api/v1/doctors/:id/appointments/:id
+  # GET /api/v1/doctors/1/appointments/2
   def appointment
     json_response(@doctor_with_appointment
       .all_appointments
       .find(params[:id]))
   end
 
-
-  # POST /api/v1/doctors
-  def create
-   
-  end
-
-  # PATCH/PUT /api/v1/doctors/1
-  def update
-   
-  end
-
-  # DELETE /api/v1/doctors/1
-  def destroy
-  end
 
   private
     # Use callbacks to share common setup or constraints between actions.
@@ -50,8 +35,4 @@ class Api::V1::DoctorsController < ApplicationController
       @doctor_with_appointment = Doctor.find(params[:doctor_id])
     end
 
-    # Only allow a trusted parameter "white list" through.
-    def api_v1_doctor_params
-      params.fetch(:api_v1_doctor, {})
-    end
 end
