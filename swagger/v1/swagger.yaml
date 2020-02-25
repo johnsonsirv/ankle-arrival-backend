@@ -17,23 +17,25 @@ paths:
       - name: appointment
         in: body
         schema:
-          user_id:
-            type: integer
-          doctor_id:
-            type: integer
-          description:
-            type: string
-          appointment_date:
-            type: string
-          appointment_time:
-            type: string
-        description: a new appointment param to be added
-        required:
-        - user_id
-        - doctor_id
-        - description
-        - appointment_date
-        - appointment_time
+          type: object
+          description: a new appointment param to be added
+          properties:
+            user_id:
+              type: integer
+            doctor_id:
+              type: integer
+            description:
+              type: string
+            appointment_date:
+              type: string
+            appointment_time:
+              type: string
+          required:
+          - user_id
+          - doctor_id
+          - description
+          - appointment_date
+          - appointment_time
       responses:
         '200':
           description: new appointment created
@@ -42,12 +44,248 @@ paths:
               user_id: 1
               doctor_id: 2
               description: This is my first appointment
-              appointment_date: '2020-03-24'
-              appointment_time: '2020-02-24 17:48:44 +0000'
+              appointment_date: '2020-03-25'
+              appointment_time: '2020-02-25 12:39:56 +0000'
         '422':
           description: invalid request
           schema:
             "$ref": "#/definitions/invalid_request_error"
+  "/appointments/{id}":
+    put:
+      summary: Update existing appointment
+      tags:
+      - User
+      consumes:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        type: integer
+        description: pass an id for the appointment
+        required: true
+      - name: appointment
+        in: body
+        schema:
+          type: object
+          description: appointment attributes to be updated
+          properties:
+            user_id:
+              type: integer
+            doctor_id:
+              type: integer
+            description:
+              type: string
+            appointment_date:
+              type: string
+            appointment_time:
+              type: string
+      responses:
+        '200':
+          description: appointment updated
+        '400':
+          description: record not found
+          schema:
+            "$ref": "#/definitions/not_found_error"
+  "/doctors":
+    get:
+      summary: Retrieves a list of doctors
+      tags:
+      - User
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: returns list of doctors
+          examples:
+            application/json:
+              id: 1
+              firstname: Jerry
+              lastname: Christian
+              email: jerry.c@bco.com
+              username: jerryC123
+              city: LA
+          schema:
+            type: array
+            items:
+              "$ref": "#/definitions/doctor"
+            required:
+            - id
+            - username
+            - email
+            - firstname
+            - lastname
+            - city
+  "/doctors/{id}":
+    get:
+      summary: Retrieves a doctor
+      tags:
+      - User
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        type: integer
+        description: pass an id for the doctor
+        required: true
+      responses:
+        '200':
+          description: doctor found
+          schema:
+            "$ref": "#/definitions/doctor"
+            required:
+            - id
+            - username
+            - email
+            - firstname
+            - lastname
+            - city
+        '400':
+          description: record not found
+          schema:
+            "$ref": "#/definitions/not_found_error"
+  "/doctors/{doctor_id}/appointments":
+    get:
+      summary: Retrieves a list of doctor's appointments
+      tags:
+      - Doctor
+      produces:
+      - application/json
+      parameters:
+      - name: doctor_id
+        in: path
+        type: integer
+        description: retrieve all appointments belonging to this id
+        required: true
+      responses:
+        '200':
+          description: doctor's appointments found
+          schema:
+            type: array
+            items:
+              "$ref": "#/definitions/appointment"
+            required:
+            - id
+            - username
+            - email
+            - doctor_firstname
+            - doctor_lastname
+            - doctor_email
+            - date_of_appointment
+            - time_of_appointment
+            - description
+        '400':
+          description: record not found
+          schema:
+            "$ref": "#/definitions/not_found_error"
+  "/doctors/{doctor_id}/appointments/{id}":
+    get:
+      summary: Retrieves a single doctor's appointment
+      tags:
+      - Doctor
+      produces:
+      - application/json
+      parameters:
+      - name: doctor_id
+        in: path
+        type: integer
+        description: the doctor's id
+        required: true
+      - name: id
+        in: path
+        type: integer
+        description: retrieve a single appointment with id belonging to doctor
+        required: true
+      responses:
+        '200':
+          description: doctor's appointment found
+          schema:
+            "$ref": "#/definitions/appointment"
+            required:
+            - id
+            - username
+            - email
+            - doctor_firstname
+            - doctor_lastname
+            - doctor_email
+            - date_of_appointment
+            - time_of_appointment
+            - description
+        '400':
+          description: record not found
+          schema:
+            "$ref": "#/definitions/not_found_error"
+  "/users/{user_id}/appointments":
+    get:
+      summary: Retrieves a list of users's appointments
+      tags:
+      - User
+      produces:
+      - application/json
+      parameters:
+      - name: user_id
+        in: path
+        type: integer
+        description: retrieve all appointments belonging to this user
+        required: true
+      responses:
+        '200':
+          description: user appointments found
+          schema:
+            type: array
+            items:
+              "$ref": "#/definitions/appointment"
+            required:
+            - id
+            - username
+            - email
+            - doctor_firstname
+            - doctor_lastname
+            - doctor_email
+            - date_of_appointment
+            - time_of_appointment
+            - description
+        '400':
+          description: record not found
+          schema:
+            "$ref": "#/definitions/not_found_error"
+  "/users/{user_id}/appointments/{id}":
+    get:
+      summary: Retrieves a single user's appointment
+      tags:
+      - User
+      produces:
+      - application/json
+      parameters:
+      - name: user_id
+        in: path
+        type: integer
+        description: the user's id
+        required: true
+      - name: id
+        in: path
+        type: integer
+        description: appointment id belonging to user
+        required: true
+      responses:
+        '200':
+          description: user's appointment found
+          schema:
+            "$ref": "#/definitions/appointment"
+            required:
+            - id
+            - username
+            - email
+            - doctor_firstname
+            - doctor_lastname
+            - doctor_email
+            - date_of_appointment
+            - time_of_appointment
+            - description
+        '400':
+          description: record not found
+          schema:
+            "$ref": "#/definitions/not_found_error"
 basePath: "/api/v1"
 definitions:
   doctor:

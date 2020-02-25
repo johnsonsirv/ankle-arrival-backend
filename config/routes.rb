@@ -14,7 +14,7 @@ Rails.application.routes.draw do
         get '/appointments/:id', to: 'users#appointment'
       end
       
-      resources :appointments, only: [:create, :update]
+      resources :appointments, only: [:create, :update, :destroy]
     end
   end
 end
