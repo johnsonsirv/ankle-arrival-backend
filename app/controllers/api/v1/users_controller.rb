@@ -23,9 +23,9 @@ class Api::V1::UsersController < ApplicationController
     def set_appointment
       @user_with_appointment = User.find(params[:user_id])
     end
-  
+
     def user_params
       params.permit(:username, :email, :city,
-        :firstname, :lastname, :password)
+                    :firstname, :lastname, :password)
     end
 end

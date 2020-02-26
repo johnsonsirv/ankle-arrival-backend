@@ -5,5 +5,4 @@ class AddColumnsToUsers < ActiveRecord::Migration[5.2]
     add_column :users, :password_digest, :string
     add_index :users, :username, unique: true
   end
-  
 end

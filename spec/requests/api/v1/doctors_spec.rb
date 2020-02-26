@@ -75,9 +75,9 @@ describe 'Api::V1::Doctors API', type: :request, swagger_doc: 'v1/swagger.yaml' 
 
         schema type: 'array',
           items: { '$ref' => '#/definitions/appointment' },
-          required: [ 'id', 'username', 'email', 'firstname', 'lastname', 'doctor_firstname',
-            'doctor_lastname', 'doctor_email', 'date_of_appointment',
-            'time_of_appointment', 'description']
+          required: %w[id username email firstname lastname doctor_firstname
+            doctor_lastname doctor_email date_of_appointment
+            time_of_appointment description]
         
         run_test! do |response|
           expect(json).not_to be_empty

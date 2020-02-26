@@ -24,9 +24,9 @@ RSpec.describe 'Api::V1::Users API', type: :request, swagger_doc: 'v1/swagger.ya
 
         schema type: 'array',
                items: { '$ref' => '#/definitions/appointment' },
-               required: ['id', 'username', 'email', 'firstname', 'lastname', 'doctor_firstname',
-                          'doctor_lastname', 'doctor_email', 'date_of_appointment',
-                          'time_of_appointment', 'description']
+               required: %w[id username email firstname lastname doctor_firstname
+                            doctor_lastname doctor_email date_of_appointment
+                            time_of_appointment description]
 
         run_test! do |_response|
           expect(json).not_to be_empty
@@ -81,7 +81,7 @@ RSpec.describe 'Api::V1::Users API', type: :request, swagger_doc: 'v1/swagger.ya
       end
     end
   end
-  
+
   # User signup
   path '/users/signup' do
     post 'User signup' do
@@ -101,7 +101,7 @@ RSpec.describe 'Api::V1::Users API', type: :request, swagger_doc: 'v1/swagger.ya
                   },
                   required: ['username', 'email', 'city', 'firstname', 'lastname', 'password']
                 }
-     
+
       response 201, 'signup successful' do
         let(:credential) { valid_signup_credential }
 
@@ -114,7 +114,7 @@ RSpec.describe 'Api::V1::Users API', type: :request, swagger_doc: 'v1/swagger.ya
           password: 'foobar'
         }
 
-        run_test! do |response|
+        run_test! do |_response|
           # test it returns a jwt
           expect(json['token']).not_to be_nil
           expect(json['message']).to match(/signup successful/)
@@ -130,5 +130,4 @@ RSpec.describe 'Api::V1::Users API', type: :request, swagger_doc: 'v1/swagger.ya
       end
     end
   end
-
 end

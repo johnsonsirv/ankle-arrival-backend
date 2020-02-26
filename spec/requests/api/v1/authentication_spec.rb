@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe 'Api::V1::Authentication API', type: :request, swagger_doc: 'v1/swagger.yaml' do
-  
   let!(:user) { create(:user) }
   let(:valid_login_credential) do
     {
@@ -9,13 +8,13 @@ RSpec.describe 'Api::V1::Authentication API', type: :request, swagger_doc: 'v1/s
       password: user.password
     }
   end
-  let(:invalid_login_credential) do 
-    { 
+  let(:invalid_login_credential) do
+    {
       username: Faker::Internet.username,
-      password: Faker::Internet.password 
-    } 
+      password: Faker::Internet.password
+    }
   end
-  
+
   path '/auth/login' do
     post 'User Login' do
       tags 'Auth'
@@ -30,7 +29,7 @@ RSpec.describe 'Api::V1::Authentication API', type: :request, swagger_doc: 'v1/s
                   },
                   required: ['username', 'password']
                 }
-     
+
       response 200, 'authentication successful' do
         let(:credential) { valid_login_credential }
 
@@ -39,7 +38,7 @@ RSpec.describe 'Api::V1::Authentication API', type: :request, swagger_doc: 'v1/s
           password: 'foobar'
         }
 
-        run_test! do |response|
+        run_test! do |_response|
           # test it returns a jwt
           expect(json['token']).not_to be_nil
         end
@@ -54,5 +53,4 @@ RSpec.describe 'Api::V1::Authentication API', type: :request, swagger_doc: 'v1/s
       end
     end
   end
-  
 end

@@ -5,10 +5,10 @@ module Response
   end
   
   def record_invalid
-    { message:  'invalid request', status_code: :unprocessable_entity }
+    { message: 'invalid request', status_code: :unprocessable_entity }
   end
   
-   def unauthorized
+  def unauthorized
     { message: 'unauthorized access', status_code: :unauthorized }
   end
   
