@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_20_113616) do
+ActiveRecord::Schema.define(version: 2020_02_25_221627) do
 
   create_table "appointments", force: :cascade do |t|
     t.integer "doctor_id"
@@ -40,6 +40,10 @@ ActiveRecord::Schema.define(version: 2020_02_20_113616) do
     t.string "city"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "firstname"
+    t.string "lastname"
+    t.string "password_digest"
+    t.index ["username"], name: "index_users_on_username", unique: true
   end
 
 end

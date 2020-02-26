@@ -13,7 +13,7 @@ class Doctor < ApplicationRecord
     appointments
     .joins('INNER JOIN users ON users.id = appointments.user_id
             INNER JOIN doctors on doctors.id = appointments.doctor_id')
-    .select('users.username, users.email,
+    .select('users.username, users.email, users.firstname, users.lastname,
             doctors.firstname as doctor_firstname,
             doctors.lastname as doctor_lastname,
             doctors.email as doctor_email,

@@ -9,6 +9,7 @@ RSpec.describe 'Api::V1::Users API', type: :request, swagger_doc: 'v1/swagger.ya
                 user: users.first)
   end
   let(:appointment_id) { appointments.first.id }
+  let(:valid_signup_credential) { attributes_for(:user) }
 
   path '/users/{user_id}/appointments' do
     get 'Retrieves a list of users\'s appointments' do
@@ -23,7 +24,7 @@ RSpec.describe 'Api::V1::Users API', type: :request, swagger_doc: 'v1/swagger.ya
 
         schema type: 'array',
                items: { '$ref' => '#/definitions/appointment' },
-               required: ['id', 'username', 'email', 'doctor_firstname',
+               required: ['id', 'username', 'email', 'firstname', 'lastname', 'doctor_firstname',
                           'doctor_lastname', 'doctor_email', 'date_of_appointment',
                           'time_of_appointment', 'description']
 
@@ -80,4 +81,54 @@ RSpec.describe 'Api::V1::Users API', type: :request, swagger_doc: 'v1/swagger.ya
       end
     end
   end
+  
+  # User signup
+  path '/users/signup' do
+    post 'User signup' do
+      tags 'Auth'
+      consumes 'application/json'
+      parameter name: :credential, in: :body,
+                schema: {
+                  type: :object,
+                  description: 'user signup credential',
+                  properties: {
+                    username: { type: 'string' },
+                    email: { type: 'string' },
+                    city: { type: 'string' },
+                    firstname: { type: 'string' },
+                    lastname: { type: 'string' },
+                    password: { type: 'string' }
+                  },
+                  required: ['username', 'email', 'city', 'firstname', 'lastname', 'password']
+                }
+     
+      response 201, 'signup successful' do
+        let(:credential) { valid_signup_credential }
+
+        examples 'application/json' => {
+          username: 'john123',
+          email: 'johnnny@kok.io',
+          city: 'LA',
+          firstname: 'john',
+          lastname: 'harry',
+          password: 'foobar'
+        }
+
+        run_test! do |response|
+          # test it returns a jwt
+          expect(json['token']).not_to be_nil
+          expect(json['message']).to match(/signup successful/)
+        end
+      end
+
+      response 422, 'invalid request' do
+        let(:credential) { {} }
+        schema '$ref' => '#/definitions/invalid_request_error'
+        run_test! do |response|
+          expect(response.body).to match(/invalid request/i)
+        end
+      end
+    end
+  end
+
 end

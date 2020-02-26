@@ -44,8 +44,8 @@ paths:
               user_id: 1
               doctor_id: 2
               description: This is my first appointment
-              appointment_date: '2020-03-25'
-              appointment_time: '2020-02-25 12:39:56 +0000'
+              appointment_date: '2020-03-26'
+              appointment_time: '2020-02-26 12:57:11 +0000'
         '422':
           description: invalid request
           schema:
@@ -86,6 +86,38 @@ paths:
           description: record not found
           schema:
             "$ref": "#/definitions/not_found_error"
+  "/auth/login":
+    post:
+      summary: User Login
+      tags:
+      - Auth
+      consumes:
+      - application/json
+      parameters:
+      - name: credential
+        in: body
+        schema:
+          type: object
+          description: user login credential
+          properties:
+            username:
+              type: string
+            password:
+              type: string
+          required:
+          - username
+          - password
+      responses:
+        '200':
+          description: authentication successful
+          examples:
+            application/json:
+              username: john123
+              password: foobar
+        '401':
+          description: unauthorized access
+          schema:
+            "$ref": "#/definitions/invalid_request_error"
   "/doctors":
     get:
       summary: Retrieves a list of doctors
@@ -168,6 +200,8 @@ paths:
             - id
             - username
             - email
+            - firstname
+            - lastname
             - doctor_firstname
             - doctor_lastname
             - doctor_email
@@ -239,6 +273,8 @@ paths:
             - id
             - username
             - email
+            - firstname
+            - lastname
             - doctor_firstname
             - doctor_lastname
             - doctor_email
@@ -286,6 +322,54 @@ paths:
           description: record not found
           schema:
             "$ref": "#/definitions/not_found_error"
+  "/users/signup":
+    post:
+      summary: User signup
+      tags:
+      - Auth
+      consumes:
+      - application/json
+      parameters:
+      - name: credential
+        in: body
+        schema:
+          type: object
+          description: user signup credential
+          properties:
+            username:
+              type: string
+            email:
+              type: string
+            city:
+              type: string
+            firstname:
+              type: string
+            lastname:
+              type: string
+            password:
+              type: string
+          required:
+          - username
+          - email
+          - city
+          - firstname
+          - lastname
+          - password
+      responses:
+        '201':
+          description: signup successful
+          examples:
+            application/json:
+              username: john123
+              email: johnnny@kok.io
+              city: LA
+              firstname: john
+              lastname: harry
+              password: foobar
+        '422':
+          description: invalid request
+          schema:
+            "$ref": "#/definitions/invalid_request_error"
 basePath: "/api/v1"
 definitions:
   doctor:
@@ -317,6 +401,10 @@ definitions:
       username:
         type: string
       email:
+        type: string
+      firstname:
+        type: string
+      lastname:
         type: string
       date_of_appointment:
         type: string

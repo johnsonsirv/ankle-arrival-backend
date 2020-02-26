@@ -42,6 +42,8 @@ RSpec.configure do |config|
             doctor_email: { type: 'string' },
             username: { type: 'string' },
             email: { type: 'string' },
+            firstname: { type: 'string' },
+            lastname: { type: 'string' },
             date_of_appointment: { type: 'string' },
             time_of_appointment: { type: 'string' },
             description: { type: 'string' }

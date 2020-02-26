@@ -15,6 +15,10 @@ Rails.application.routes.draw do
       end
       
       resources :appointments, only: [:create, :update, :destroy]
+      
+      # auth
+      post '/users/signup', to: 'users#create'
+      post '/auth/login', to: 'authentication#create'
     end
   end
 end
