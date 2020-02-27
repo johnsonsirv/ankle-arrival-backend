@@ -11,6 +11,7 @@ RSpec.describe AuthenticateUser do
       it 'returns an auth token' do
         token = valid_login.create
         expect(token).not_to be_nil
+        expect(token.split('.').size).to eq(3) # jwt xxx.yyy.zzz
       end
     end
 

@@ -13,6 +13,8 @@ paths:
       - User
       consumes:
       - application/json
+      security:
+      - JWT: {}
       parameters:
       - name: appointment
         in: body
@@ -44,8 +46,8 @@ paths:
               user_id: 1
               doctor_id: 2
               description: This is my first appointment
-              appointment_date: '2020-03-26'
-              appointment_time: '2020-02-26 12:57:11 +0000'
+              appointment_date: '2020-03-27'
+              appointment_time: '2020-02-27 16:21:43 +0000'
         '422':
           description: invalid request
           schema:
@@ -57,6 +59,8 @@ paths:
       - User
       consumes:
       - application/json
+      security:
+      - JWT: {}
       parameters:
       - name: id
         in: path
@@ -82,7 +86,7 @@ paths:
       responses:
         '200':
           description: appointment updated
-        '400':
+        '404':
           description: record not found
           schema:
             "$ref": "#/definitions/not_found_error"
@@ -125,6 +129,8 @@ paths:
       - User
       produces:
       - application/json
+      security:
+      - JWT: {}
       responses:
         '200':
           description: returns list of doctors
@@ -154,6 +160,8 @@ paths:
       - User
       produces:
       - application/json
+      security:
+      - JWT: {}
       parameters:
       - name: id
         in: path
@@ -172,7 +180,7 @@ paths:
             - firstname
             - lastname
             - city
-        '400':
+        '404':
           description: record not found
           schema:
             "$ref": "#/definitions/not_found_error"
@@ -183,6 +191,8 @@ paths:
       - Doctor
       produces:
       - application/json
+      security:
+      - JWT: {}
       parameters:
       - name: doctor_id
         in: path
@@ -208,7 +218,7 @@ paths:
             - date_of_appointment
             - time_of_appointment
             - description
-        '400':
+        '404':
           description: record not found
           schema:
             "$ref": "#/definitions/not_found_error"
@@ -219,6 +229,8 @@ paths:
       - Doctor
       produces:
       - application/json
+      security:
+      - JWT: {}
       parameters:
       - name: doctor_id
         in: path
@@ -245,7 +257,7 @@ paths:
             - date_of_appointment
             - time_of_appointment
             - description
-        '400':
+        '404':
           description: record not found
           schema:
             "$ref": "#/definitions/not_found_error"
@@ -256,6 +268,8 @@ paths:
       - User
       produces:
       - application/json
+      security:
+      - JWT: {}
       parameters:
       - name: user_id
         in: path
@@ -281,7 +295,7 @@ paths:
             - date_of_appointment
             - time_of_appointment
             - description
-        '400':
+        '422':
           description: record not found
           schema:
             "$ref": "#/definitions/not_found_error"
@@ -292,6 +306,8 @@ paths:
       - User
       produces:
       - application/json
+      security:
+      - JWT: {}
       parameters:
       - name: user_id
         in: path
@@ -318,7 +334,7 @@ paths:
             - date_of_appointment
             - time_of_appointment
             - description
-        '400':
+        '422':
           description: record not found
           schema:
             "$ref": "#/definitions/not_found_error"
@@ -371,6 +387,12 @@ paths:
           schema:
             "$ref": "#/definitions/invalid_request_error"
 basePath: "/api/v1"
+securityDefinitions:
+  JWT:
+    description: authorization scheme
+    name: Authorization
+    type: apiKey
+    in: header
 definitions:
   doctor:
     type: object

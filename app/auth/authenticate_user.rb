@@ -29,6 +29,6 @@ class AuthenticateUser
 
   def jwt
     # call the JWT service here
-    'RIGHJJ4H5534555'
+    JsonWebToken.encode(payload: { user_id: user.id})
   end
 end

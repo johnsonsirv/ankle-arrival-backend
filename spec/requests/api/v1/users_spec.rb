@@ -15,11 +15,14 @@ RSpec.describe 'Api::V1::Users API', type: :request, swagger_doc: 'v1/swagger.ya
     get 'Retrieves a list of users\'s appointments' do
       tags 'User'
       produces 'application/json'
+      security [JWT: {}]
       parameter name: :user_id, in: :path, type: :integer,
                 description: 'retrieve all appointments belonging to this user',
                 required: true
 
+     
       response 200, 'user appointments found' do
+         let(:'Authorization') { "Bearer #{token_generator(first_user_id)}" }
         let(:user_id) { first_user_id }
 
         schema type: 'array',
@@ -35,11 +38,12 @@ RSpec.describe 'Api::V1::Users API', type: :request, swagger_doc: 'v1/swagger.ya
         end
       end
 
-      response 400, 'record not found' do
+      response 422, 'record not found' do
+        let(:'Authorization') { "Bearer #{token_generator(50)}" }
         let(:user_id) { 50 }
         schema '$ref' => '#/definitions/not_found_error'
         run_test! do |response|
-          expect(response.body).to match(/record not found/i)
+          expect(response.body).to match(/invalid token/i)
         end
       end
     end
@@ -49,6 +53,7 @@ RSpec.describe 'Api::V1::Users API', type: :request, swagger_doc: 'v1/swagger.ya
     get 'Retrieves a single user\'s appointment' do
       tags 'User'
       produces 'application/json'
+      security [JWT: {}]
       parameter name: :user_id, in: :path, type: :integer,
                 description: 'the user\'s id',
                 required: true
@@ -60,6 +65,7 @@ RSpec.describe 'Api::V1::Users API', type: :request, swagger_doc: 'v1/swagger.ya
       let(:id) { appointment_id }
 
       response 200, 'user\'s appointment found' do
+         let(:'Authorization') { "Bearer #{token_generator(first_user_id)}" }
         schema '$ref' => '#/definitions/appointment',
                required: ['id', 'username', 'email', 'doctor_firstname',
                           'doctor_lastname', 'doctor_email', 'date_of_appointment',
@@ -72,11 +78,12 @@ RSpec.describe 'Api::V1::Users API', type: :request, swagger_doc: 'v1/swagger.ya
         end
       end
 
-      response 400, 'record not found' do
+      response 422, 'record not found' do
+         let(:'Authorization') { "Bearer #{token_generator(50)}" }
         let(:user_id) { 50 }
         schema '$ref' => '#/definitions/not_found_error'
         run_test! do |response|
-          expect(response.body).to match(/record not found/i)
+          expect(response.body).to match(/invalid token/i)
         end
       end
     end

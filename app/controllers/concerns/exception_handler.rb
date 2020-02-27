@@ -7,6 +7,7 @@ module ExceptionHandler
   class AuthenticationError < StandardError; end
   class InvalidToken < StandardError; end
   class MissingToken < StandardError; end
+  class ExpiredSignature < StandardError; end
 
   included do
     rescue_from ExceptionHandler::AuthenticationError do |e|
@@ -22,6 +23,11 @@ module ExceptionHandler
     rescue_from ExceptionHandler::MissingToken do |e|
       json_response({ message: missing_token[:message] },
         missing_token[:status_code])
+    end
+    
+    rescue_from ExceptionHandler::ExpiredSignature do |e|
+      json_response({ message: expired_token[:message] },
+        expired_token[:status_code])
     end
     
     rescue_from ActiveRecord::RecordNotFound do |e|

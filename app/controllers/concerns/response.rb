@@ -16,6 +16,10 @@ module Response
     { message: 'invalid token', status_code: :unprocessable_entity }
   end
   
+  def expired_token
+     { message: 'expired token', status_code: :unauthorized }
+  end
+  
   def missing_token
     { message: 'missing token', status_code: :unprocessable_entity }
   end

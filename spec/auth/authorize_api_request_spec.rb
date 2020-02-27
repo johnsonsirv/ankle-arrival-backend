@@ -41,7 +41,7 @@ RSpec.describe AuthorizeApiRequest do
       end
       it 'raises expired token error' do
         expect { request_with_expired_token.create }
-          .to raise_error(ExceptionHandler::InvalidToken)
+          .to raise_error(ExceptionHandler::ExpiredSignature)
       end
       
       it 'raises error on fake token' do

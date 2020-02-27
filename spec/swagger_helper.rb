@@ -21,6 +21,14 @@ RSpec.configure do |config|
       },
       paths: {},
       basePath: '/api/v1',
+      securityDefinitions: {
+        JWT: {
+          description: 'authorization scheme',
+          name: 'Authorization',
+          type: :apiKey,
+          in: :header
+        }
+      },
       definitions: {
         doctor: {
           type: 'object',

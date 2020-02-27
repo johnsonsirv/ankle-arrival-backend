@@ -2,15 +2,18 @@ require 'rails_helper'
 require 'swagger_helper'
 
 describe 'Api::V1::Doctors API', type: :request, swagger_doc: 'v1/swagger.yaml' do
-  
+  let!(:user) { create(:user) }
   let!(:doctors) { create_list(:doctor, 10) }
   let(:first_doctor_id) { doctors.first.id }
 
   path '/doctors' do
     get 'Retrieves a list of doctors' do
       tags   'User'
-      produces 'application/json'      
+      produces 'application/json'
+      security [JWT: {}]
+
       response 200, 'returns list of doctors' do
+        let(:'Authorization') { "Bearer #{token_generator(user.id)}" }
         examples 'application/json' => {
           id: 1,
           firstname: 'Jerry',
@@ -35,8 +38,11 @@ describe 'Api::V1::Doctors API', type: :request, swagger_doc: 'v1/swagger.yaml' 
     get 'Retrieves a doctor' do
       tags   'User'
       produces 'application/json'
+      security [JWT: {}]
       parameter name: :id, in: :path, type: :integer,
       description: 'pass an id for the doctor', required: true
+
+      let(:'Authorization') { "Bearer #{token_generator(user.id)}" }
 
       response 200, 'doctor found' do
         let (:id) { first_doctor_id }
@@ -48,7 +54,7 @@ describe 'Api::V1::Doctors API', type: :request, swagger_doc: 'v1/swagger.yaml' 
         end
       end
       
-      response 400, 'record not found' do
+      response 404, 'record not found' do
         let (:id) { 50 }
         schema '$ref' => '#/definitions/not_found_error'
         run_test! do |response|
@@ -63,12 +69,15 @@ describe 'Api::V1::Doctors API', type: :request, swagger_doc: 'v1/swagger.yaml' 
     get 'Retrieves a list of doctor\'s appointments' do
       tags   'Doctor'
       produces 'application/json'
+      security [JWT: {}]
       parameter name: :doctor_id, in: :path, type: :integer,
       description: 'retrieve all appointments belonging to this id',
       required: true
       
-       let!(:appointments) { create_list(:appointment, 10,
+      let(:'Authorization') { "Bearer #{token_generator(user.id)}" }
+      let!(:appointments) { create_list(:appointment, 10,
         { doctor: doctors.first }) }
+
 
       response 200, 'doctor\'s appointments found' do
         let(:doctor_id) { first_doctor_id }
@@ -86,7 +95,7 @@ describe 'Api::V1::Doctors API', type: :request, swagger_doc: 'v1/swagger.yaml' 
         end
       end
       
-      response 400, 'record not found' do
+      response 404, 'record not found' do
         let (:doctor_id) { 50 }
         schema '$ref' => '#/definitions/not_found_error'
         run_test! do |response|
@@ -101,6 +110,7 @@ describe 'Api::V1::Doctors API', type: :request, swagger_doc: 'v1/swagger.yaml' 
     get 'Retrieves a single doctor\'s appointment' do
       tags   'Doctor'
       produces 'application/json'
+      security [JWT: {}]
       parameter name: :doctor_id, in: :path, type: :integer,
       description: 'the doctor\'s id',
       required: true
@@ -108,6 +118,7 @@ describe 'Api::V1::Doctors API', type: :request, swagger_doc: 'v1/swagger.yaml' 
       description: 'retrieve a single appointment with id belonging to doctor',
       required: true
       
+      let(:'Authorization') { "Bearer #{token_generator(user.id)}" }
       let!(:appointments) { create_list(:appointment, 10,
         { doctor: doctors.first }) }
       let(:appointment_id) { appointments.first.id }
@@ -128,7 +139,7 @@ describe 'Api::V1::Doctors API', type: :request, swagger_doc: 'v1/swagger.yaml' 
         end
       end
       
-      response 400, 'record not found' do
+      response 404, 'record not found' do
         let (:doctor_id) { 50 }
         schema '$ref' => '#/definitions/not_found_error'
         run_test! do |response|

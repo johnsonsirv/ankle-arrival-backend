@@ -12,6 +12,7 @@ RSpec.describe 'Api::V1::Appointments API', type: :request, swagger_doc: 'v1/swa
     post 'Create a new appointment' do
       tags 'User'
       consumes 'application/json'
+      security [JWT: {}]
       parameter name: :appointment, in: :body,
                 schema: {
                   type: :object,
@@ -25,6 +26,8 @@ RSpec.describe 'Api::V1::Appointments API', type: :request, swagger_doc: 'v1/swa
                   },
                   required: ['user_id', 'doctor_id', 'description', 'appointment_date', 'appointment_time']
                 }
+
+      let(:'Authorization') { "Bearer #{token_generator(users.first.id)}" }
 
       response 200, 'new appointment created' do
         let(:appointment) { valid_attributes }
@@ -58,6 +61,7 @@ RSpec.describe 'Api::V1::Appointments API', type: :request, swagger_doc: 'v1/swa
     put 'Update existing appointment' do
       tags 'User'
       consumes 'application/json'
+      security [JWT: {}]
       parameter name: :id, in: :path, type: :integer,
                 description: 'pass an id for the appointment', required: true
       parameter name: :appointment, in: :body,
@@ -73,6 +77,7 @@ RSpec.describe 'Api::V1::Appointments API', type: :request, swagger_doc: 'v1/swa
                   }
                 }
 
+      let(:'Authorization') { "Bearer #{token_generator(users.first.id)}" }
       let(:valid_appointment) { create(:appointment, doctor: doctors.first, user: users.second) }
 
       response 200, 'appointment updated' do
@@ -85,7 +90,7 @@ RSpec.describe 'Api::V1::Appointments API', type: :request, swagger_doc: 'v1/swa
         end
       end
 
-      response 400, 'record not found' do
+      response 404, 'record not found' do
         let(:id) { 50 }
         let(:appointment) { { description: 'This description was updated' } }
         schema '$ref' => '#/definitions/not_found_error'

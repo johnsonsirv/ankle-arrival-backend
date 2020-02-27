@@ -1,9 +1,11 @@
 class Api::V1::AuthenticationController < ApplicationController
+  skip_before_action :authorize_api_request, only: :create
+
   def create
     # if the user authentication is successful, return a jwt
     login_attempt = AuthenticateUser.new(auth_params[:username], auth_params[:password])
     token = login_attempt.create
-    json_response(token: token)
+    json_response({ token: token })
   end
 
   private

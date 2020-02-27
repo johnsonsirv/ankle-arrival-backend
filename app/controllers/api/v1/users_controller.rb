@@ -1,9 +1,10 @@
 class Api::V1::UsersController < ApplicationController
   before_action :set_appointment, only: [:appointments, :appointment]
+  skip_before_action :authorize_api_request, only: :create
 
   def create
     user = User.create!(user_params)
-    token = 'SFJ4FJGKL345' # to be returned as jwt from JWT service
+    token = JsonWebToken.encode(payload: { user_id: user.id}) # JWT service
     response = { message: Message.signup_successful, token: token }
     json_response(response, :created)
   end
@@ -21,7 +22,7 @@ class Api::V1::UsersController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_appointment
-      @user_with_appointment = User.find(params[:user_id])
+      @user_with_appointment = current_user # based on decoded token
     end
 
     def user_params

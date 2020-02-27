@@ -5,8 +5,7 @@ module AuthorizationSpecHelper
   end
   
   def expired_token_generator(user_id)
-    expire = Time.now.to_i - 10
-    p "sent#{$expire}"
+    expire = 72.hours.ago.to_i
     JsonWebToken.encode(payload: {user_id: user_id}, expire: expire)
   end
   
@@ -16,7 +15,8 @@ module AuthorizationSpecHelper
       expired_token: expired_token_generator(obj[:user_id]),
       invalid_token: token_generator(5),
       fake_token: 'faketoken',
-      valid_token: token_generator(obj[:user_id])
+      valid_token: token_generator(obj[:user_id]),
+      missing_token: nil
     }
     test_token_headers[obj[:type]]
   end
