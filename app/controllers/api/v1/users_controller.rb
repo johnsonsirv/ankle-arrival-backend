@@ -5,7 +5,7 @@ class Api::V1::UsersController < ApplicationController
   def create
     user = User.create!(user_params)
     token = JsonWebToken.encode(payload: { user_id: user.id}) # JWT service
-    response = { message: Message.signup_successful, token: token }
+    response = { message: Message.signup_successful, token: token, username: user_params[:username] }
     json_response(response, :created)
   end
 

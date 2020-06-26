@@ -5,7 +5,8 @@ class Api::V1::AuthenticationController < ApplicationController
     # if the user authentication is successful, return a jwt
     login_attempt = AuthenticateUser.new(auth_params[:username], auth_params[:password])
     token = login_attempt.create
-    json_response({ token: token })
+    response = { token: token, username: auth_params[:username] }
+    json_response(response)
   end
 
   private

@@ -46,8 +46,8 @@ paths:
               user_id: 1
               doctor_id: 2
               description: This is my first appointment
-              appointment_date: '2020-03-27'
-              appointment_time: '2020-02-27 16:21:43 +0000'
+              appointment_date: '2020-07-26'
+              appointment_time: '2020-06-26 19:06:53 +0000'
         '422':
           description: invalid request
           schema:
