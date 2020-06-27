@@ -46,8 +46,8 @@ paths:
               user_id: 1
               doctor_id: 2
               description: This is my first appointment
-              appointment_date: '2020-07-26'
-              appointment_time: '2020-06-26 19:06:53 +0000'
+              appointment_date: '2020-07-27'
+              appointment_time: '2020-06-27 21:34:37 +0000'
         '422':
           description: invalid request
           schema:
@@ -261,7 +261,7 @@ paths:
           description: record not found
           schema:
             "$ref": "#/definitions/not_found_error"
-  "/users/{user_id}/appointments":
+  "/users/appointments":
     get:
       summary: Retrieves a list of users's appointments
       tags:
@@ -270,12 +270,6 @@ paths:
       - application/json
       security:
       - JWT: {}
-      parameters:
-      - name: user_id
-        in: path
-        type: integer
-        description: retrieve all appointments belonging to this user
-        required: true
       responses:
         '200':
           description: user appointments found
@@ -299,7 +293,7 @@ paths:
           description: record not found
           schema:
             "$ref": "#/definitions/not_found_error"
-  "/users/{user_id}/appointments/{id}":
+  "/users/appointments/{id}":
     get:
       summary: Retrieves a single user's appointment
       tags:
@@ -309,11 +303,6 @@ paths:
       security:
       - JWT: {}
       parameters:
-      - name: user_id
-        in: path
-        type: integer
-        description: the user's id
-        required: true
       - name: id
         in: path
         type: integer

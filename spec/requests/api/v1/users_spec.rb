@@ -11,15 +11,11 @@ RSpec.describe 'Api::V1::Users API', type: :request, swagger_doc: 'v1/swagger.ya
   let(:appointment_id) { appointments.first.id }
   let(:valid_signup_credential) { attributes_for(:user) }
 
-  path '/users/{user_id}/appointments' do
+  path '/users/appointments' do
     get 'Retrieves a list of users\'s appointments' do
       tags 'User'
       produces 'application/json'
       security [JWT: {}]
-      parameter name: :user_id, in: :path, type: :integer,
-                description: 'retrieve all appointments belonging to this user',
-                required: true
-
      
       response 200, 'user appointments found' do
          let(:'Authorization') { "Bearer #{token_generator(first_user_id)}" }
@@ -49,14 +45,11 @@ RSpec.describe 'Api::V1::Users API', type: :request, swagger_doc: 'v1/swagger.ya
     end
   end
 
-  path '/users/{user_id}/appointments/{id}' do
+  path '/users/appointments/{id}' do
     get 'Retrieves a single user\'s appointment' do
       tags 'User'
       produces 'application/json'
       security [JWT: {}]
-      parameter name: :user_id, in: :path, type: :integer,
-                description: 'the user\'s id',
-                required: true
       parameter name: :id, in: :path, type: :integer,
                 description: 'appointment id belonging to user',
                 required: true

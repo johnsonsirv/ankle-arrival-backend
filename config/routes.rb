@@ -9,10 +9,10 @@ Rails.application.routes.draw do
         get '/appointments/:id', to: 'doctors#appointment'
       end
 
-      resources :users do
-        get '/appointments', to: 'users#appointments'
-        get '/appointments/:id', to: 'users#appointment'
-      end
+      
+      get '/users/appointments', to: 'users#appointments'
+      get '/users/appointments/:id', to: 'users#appointment'
+      
       
       resources :appointments, only: [:create, :update, :destroy]
       
