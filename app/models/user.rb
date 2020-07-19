@@ -22,6 +22,7 @@ class User < ApplicationRecord
             appointments.appointment_date as date_of_appointment,
             appointments.appointment_time as time_of_appointment,
             appointments.description, appointments.id')
+    .order(updated_at: :desc)
   end
  
 
