@@ -18,13 +18,12 @@ RSpec.describe 'Api::V1::Appointments API', type: :request, swagger_doc: 'v1/swa
                   type: :object,
                   description: 'a new appointment param to be added',
                   properties: {
-                    user_id: { type: 'integer' },
                     doctor_id: { type: 'integer' },
                     description: { type: 'string' },
                     appointment_date: { type: 'string' },
                     appointment_time: { type: 'string' }
                   },
-                  required: ['user_id', 'doctor_id', 'description', 'appointment_date', 'appointment_time']
+                  required: ['doctor_id', 'description', 'appointment_date', 'appointment_time']
                 }
 
       let(:'Authorization') { "Bearer #{token_generator(users.first.id)}" }
@@ -32,7 +31,6 @@ RSpec.describe 'Api::V1::Appointments API', type: :request, swagger_doc: 'v1/swa
       response 200, 'new appointment created' do
         let(:appointment) { valid_attributes }
         examples 'application/json' => {
-          user_id: 1,
           doctor_id: 2,
           description: 'This is my first appointment',
           appointment_date: Date.today.next_month.to_s,
@@ -69,7 +67,6 @@ RSpec.describe 'Api::V1::Appointments API', type: :request, swagger_doc: 'v1/swa
                   type: :object,
                   description: 'appointment attributes to be updated',
                   properties: {
-                    user_id: { type: 'integer' },
                     doctor_id: { type: 'integer' },
                     description: { type: 'string' },
                     appointment_date: { type: 'string' },

@@ -1,4 +1,5 @@
 require 'rails_helper'
+# rspec spec/requests/api/v1/ --format documentation --format Rswag::Specs::SwaggerFormatter
 
 RSpec.configure do |config|
   # Specify a root folder where Swagger JSON files are generated

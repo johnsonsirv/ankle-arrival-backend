@@ -5,8 +5,10 @@ class Api::V1::AppointmentsController < ApplicationController
 
   # POST /api/v1/appointments
   def create
-    @appointment = Appointment.create!(appointment_params)
-    json_response(@appointment)
+    request = current_user.appointments.build(appointment_params)
+    return json_response(request) if request.save
+
+    raise(ActiveRecord::RecordInvalid)
   end
 
   # PATCH/PUT /api/v1/appointments/1
@@ -27,6 +29,6 @@ class Api::V1::AppointmentsController < ApplicationController
 
   # Only allow a trusted parameter "white list" through.
   def appointment_params
-    params.permit(:user_id, :doctor_id, :description, :appointment_date, :appointment_time)
+    params.permit(:doctor_id, :description, :appointment_date, :appointment_time)
   end
 end

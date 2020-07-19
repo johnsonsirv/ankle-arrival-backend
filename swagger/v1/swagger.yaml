@@ -22,8 +22,6 @@ paths:
           type: object
           description: a new appointment param to be added
           properties:
-            user_id:
-              type: integer
             doctor_id:
               type: integer
             description:
@@ -33,7 +31,6 @@ paths:
             appointment_time:
               type: string
           required:
-          - user_id
           - doctor_id
           - description
           - appointment_date
@@ -43,11 +40,10 @@ paths:
           description: new appointment created
           examples:
             application/json:
-              user_id: 1
               doctor_id: 2
               description: This is my first appointment
-              appointment_date: '2020-07-27'
-              appointment_time: '2020-06-27 21:34:37 +0000'
+              appointment_date: '2020-08-19'
+              appointment_time: '2020-07-19 19:39:24 +0000'
         '422':
           description: invalid request
           schema:
@@ -73,8 +69,6 @@ paths:
           type: object
           description: appointment attributes to be updated
           properties:
-            user_id:
-              type: integer
             doctor_id:
               type: integer
             description:

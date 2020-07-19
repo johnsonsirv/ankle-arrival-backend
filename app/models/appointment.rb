@@ -3,7 +3,7 @@ class Appointment < ApplicationRecord
   belongs_to :user
   
   validates_presence_of :description, :appointment_date, :appointment_time
-  validate :appointment_date_is_valid
+  # validate :appointment_date_is_valid
   
   
   private
