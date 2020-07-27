@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_17_083934) do
+ActiveRecord::Schema.define(version: 2020_07_26_215742) do
 
   create_table "appointments", force: :cascade do |t|
     t.integer "doctor_id"
@@ -43,6 +43,8 @@ ActiveRecord::Schema.define(version: 2020_07_17_083934) do
     t.string "firstname"
     t.string "lastname"
     t.string "password_digest"
+    t.string "provider"
+    t.string "uid"
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 

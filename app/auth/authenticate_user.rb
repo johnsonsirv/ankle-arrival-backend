@@ -2,7 +2,7 @@
 
 class AuthenticateUser
   def initialize(username, password)
-    @username = username
+    @username = username.downcase
     @password = password
   end
 
@@ -11,17 +11,22 @@ class AuthenticateUser
     # return a jwt if username
     jwt if user
   end
-
+ 
   private
 
   attr_reader :username, :password
-
+    # raise an exception is user authenticated via oauth attempts normal login
   def user
     user = User.find_by(username: username)
+    
+    raise ExceptionHandler::AuthenticationError if 
+      user.uid || user.provider
+    
     return user if valid_login(user)
 
     raise ExceptionHandler::AuthenticationError
   end
+  
 
   def valid_login(user)
     user&.authenticate(password)

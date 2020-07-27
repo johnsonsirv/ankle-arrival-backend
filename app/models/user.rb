@@ -25,6 +25,16 @@ class User < ApplicationRecord
     .order(updated_at: :desc)
   end
  
+  def self.from_oauth(auth)
+    where(provider: auth[:provider], uid: auth[:token]).first_or_create do |user|
+      user.firstname = auth[:firstname]
+      user.lastname = auth[:lastname]
+      user.email = auth[:email]
+      user.city = auth[:city]
+      user.username = auth[:username]
+      user.password = auth[:password]
+    end
+  end
 
   private
 
