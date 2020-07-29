@@ -16,9 +16,9 @@ RSpec.configure do |config|
     'v1/swagger.yaml' => {
       swagger: '2.0',
       info: {
-        title: 'Book Appointment API',
+        title: 'Ankle Arrival API',
         version: 'v1',
-        description: 'This API is a backend for a tablet web-app that will enable sports athletes(users) to book an appointment with a physiotherapist doctor'
+        description: 'This API is a back-end for a tablet web-app that will enable sports athletes(users) to book an appointment with a physiotherapist doctor'
       },
       paths: {},
       basePath: '/api/v1',
