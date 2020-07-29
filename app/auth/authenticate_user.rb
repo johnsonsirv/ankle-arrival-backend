@@ -15,12 +15,13 @@ class AuthenticateUser
   private
 
   attr_reader :username, :password
-    # raise an exception is user authenticated via oauth attempts normal login
+
   def user
     user = User.find_by(username: username)
     
-    raise ExceptionHandler::AuthenticationError if 
-      user.uid || user.provider
+     # raise an exception is user authenticated via oauth attempts normal login
+    raise ExceptionHandler::AuthenticationError if user &&
+      (user.uid || user.provider)
     
     return user if valid_login(user)
 
