@@ -5,7 +5,7 @@ ruby '2.4.0'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.2.3'
-
+gem "sprockets", "~> 3.7.2" 
 # Use Puma as the app server
 gem 'puma', '~> 3.11'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
@@ -32,7 +32,7 @@ gem 'rswag' # swaggar documentation
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
-  gem 'factory_bot_rails'
+  gem 'factory_bot_rails', '5.2.0'
   gem 'rspec-rails'
   # Use sqlite3 as the database for Active Record
   gem 'sqlite3'
@@ -48,7 +48,7 @@ end
 group :test do
   gem 'database_cleaner'
   gem 'shoulda-matchers'
-  gem 'faker'
+  gem 'faker', '2.12.0'
 end
 
 group :production do
