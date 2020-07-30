@@ -20,7 +20,7 @@
 <p>
   <b>Ankle Arrival</b> - Connects sports athletes to physiotherapists and provides an instant diagnosis to sports-related injuries using Artificial Intelligence.
 
-<b>Ankle Arrival</b> runs on a RESTful back-end API that support basic functionalities.
+<b>Ankle Arrival</b> runs on a RESTful back-end API that support basic functionalities such as:
 </p>
 
 - Users can signup / signin
