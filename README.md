@@ -31,6 +31,7 @@
 Ankle Arrival API is hosted on [Heroku](https://heroku.com) and can be tested using [Postman](https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdggehcddcbncdddomop?hl=en) or [Swagger UI](https://anklearrival.herokuapp.com/api-docs/index.html) or any other REST client tool.
 
 ### Live URL: https://anklearrival.herokuapp.com
+### API Docs: https://anklearrival.herokuapp.com/api-docs/index.html
 
 <a href="https://anklearrival.herokuapp.com/api-docs/index.html" target="_blank">
     <img alt="ankle-arrival" src="https://github.com/johnsonsirv/ankle-arrival-backend/blob/ouath/docs/ankle-arrival.png" />
