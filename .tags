@@ -1,0 +1,53 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+Api	app/controllers/api/v1/doctors_controller.rb	/^class Api::V1::DoctorsController < ApplicationController$/;"	c	line:1
+Api	app/controllers/api/v1/users_controller.rb	/^class Api::V1::UsersController < ApplicationController$/;"	c	line:1
+Application	config/application.rb	/^  class Application < Rails::Application$/;"	c	line:21	class:BookAppointmentApi
+ApplicationCable	app/channels/application_cable/channel.rb	/^module ApplicationCable$/;"	m	line:1
+ApplicationCable	app/channels/application_cable/connection.rb	/^module ApplicationCable$/;"	m	line:1
+ApplicationController	app/controllers/application_controller.rb	/^class ApplicationController < ActionController::API$/;"	c	line:1
+ApplicationJob	app/jobs/application_job.rb	/^class ApplicationJob < ActiveJob::Base$/;"	c	line:1
+ApplicationMailer	app/mailers/application_mailer.rb	/^class ApplicationMailer < ActionMailer::Base$/;"	c	line:1
+ApplicationRecord	app/models/application_record.rb	/^class ApplicationRecord < ActiveRecord::Base$/;"	c	line:1
+Appointment	app/models/appointment.rb	/^class Appointment < ApplicationRecord$/;"	c	line:1
+BookAppointmentApi	config/application.rb	/^module BookAppointmentApi$/;"	m	line:20
+Channel	app/channels/application_cable/channel.rb	/^  class Channel < ActionCable::Channel::Base$/;"	c	line:2	class:ApplicationCable
+Connection	app/channels/application_cable/connection.rb	/^  class Connection < ActionCable::Connection::Base$/;"	c	line:2	class:ApplicationCable
+CreateAppointments	db/migrate/20200220113616_create_appointments.rb	/^class CreateAppointments < ActiveRecord::Migration[5.2]$/;"	c	line:1
+CreateDoctors	db/migrate/20200220111056_create_doctors.rb	/^class CreateDoctors < ActiveRecord::Migration[5.2]$/;"	c	line:1
+CreateUsers	db/migrate/20200220112028_create_users.rb	/^class CreateUsers < ActiveRecord::Migration[5.2]$/;"	c	line:1
+Doctor	app/models/doctor.rb	/^class Doctor < ApplicationRecord$/;"	c	line:1
+ExceptionHandler	app/controllers/concerns/exception_handler.rb	/^module ExceptionHandler$/;"	m	line:1
+RequestSpecHelper	spec/support/request_spec_helper.rb	/^module RequestSpecHelper$/;"	m	line:1
+Response	app/controllers/concerns/response.rb	/^module Response$/;"	m	line:1
+User	app/models/user.rb	/^class User < ApplicationRecord$/;"	c	line:1
+api_v1_doctor_params	app/controllers/api/v1/doctors_controller.rb	/^    def api_v1_doctor_params$/;"	f	line:47	class:Api
+api_v1_user_params	app/controllers/api/v1/users_controller.rb	/^    def api_v1_user_params$/;"	f	line:48	class:Api
+appointment_date_is_valid	app/models/appointment.rb	/^	def appointment_date_is_valid$/;"	f	line:10	class:Appointment
+change	db/migrate/20200220111056_create_doctors.rb	/^  def change$/;"	f	line:2	class:CreateDoctors
+change	db/migrate/20200220112028_create_users.rb	/^  def change$/;"	f	line:2	class:CreateUsers
+change	db/migrate/20200220113616_create_appointments.rb	/^  def change$/;"	f	line:2	class:CreateAppointments
+create	app/controllers/api/v1/doctors_controller.rb	/^  def create$/;"	f	line:16	class:Api
+create	app/controllers/api/v1/users_controller.rb	/^  def create$/;"	f	line:17	class:Api
+destroy	app/controllers/api/v1/doctors_controller.rb	/^  def destroy$/;"	f	line:36	class:Api
+destroy	app/controllers/api/v1/users_controller.rb	/^  def destroy$/;"	f	line:37	class:Api
+get_doctor	app/controllers/api/v1/doctors_controller.rb	/^    def get_doctor$/;"	f	line:42	class:Api
+index	app/controllers/api/v1/doctors_controller.rb	/^  def index$/;"	f	line:5	class:Api
+index	app/controllers/api/v1/users_controller.rb	/^  def index$/;"	f	line:5	class:Api
+json	spec/support/request_spec_helper.rb	/^  def json$/;"	f	line:3	class:RequestSpecHelper
+json_response	app/controllers/concerns/response.rb	/^  def json_response(object, status = :ok)$/;"	f	line:11	class:Response
+record_invalid	app/controllers/concerns/response.rb	/^  def record_invalid$/;"	f	line:7	class:Response
+record_not_found	app/controllers/concerns/response.rb	/^  def record_not_found$/;"	f	line:3	class:Response
+set_api_v1_user	app/controllers/api/v1/users_controller.rb	/^    def set_api_v1_user$/;"	f	line:43	class:Api
+show	app/controllers/api/v1/doctors_controller.rb	/^  def show$/;"	f	line:11	class:Api
+show	app/controllers/api/v1/users_controller.rb	/^  def show$/;"	f	line:12	class:Api
+system!	bin/setup	/^def system!(*args)$/;"	f	line:8
+system!	bin/update	/^def system!(*args)$/;"	f	line:8
+to_lower_case	app/models/doctor.rb	/^    def to_lower_case$/;"	f	line:14	class:Doctor
+to_lower_case	app/models/user.rb	/^    def to_lower_case$/;"	f	line:14	class:User
+update	app/controllers/api/v1/doctors_controller.rb	/^  def update$/;"	f	line:27	class:Api
+update	app/controllers/api/v1/users_controller.rb	/^  def update$/;"	f	line:28	class:Api

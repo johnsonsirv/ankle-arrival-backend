@@ -1,0 +1,429 @@
+---
+swagger: '2.0'
+info:
+  title: Ankle Arrival API
+  version: v1
+  description: This API is a back-end for a tablet web-app that will enable sports
+    athletes(users) to book an appointment with a physiotherapist doctor
+paths:
+  "/appointments":
+    post:
+      summary: Create a new appointment
+      tags:
+      - User
+      consumes:
+      - application/json
+      security:
+      - JWT: {}
+      parameters:
+      - name: appointment
+        in: body
+        schema:
+          type: object
+          description: a new appointment param to be added
+          properties:
+            doctor_id:
+              type: integer
+            description:
+              type: string
+            appointment_date:
+              type: string
+            appointment_time:
+              type: string
+          required:
+          - doctor_id
+          - description
+          - appointment_date
+          - appointment_time
+      responses:
+        '200':
+          description: new appointment created
+          examples:
+            application/json:
+              doctor_id: 2
+              description: This is my first appointment
+              appointment_date: '2020-08-29'
+              appointment_time: '2020-07-29 16:47:07 +0000'
+        '422':
+          description: invalid request
+          schema:
+            "$ref": "#/definitions/invalid_request_error"
+  "/appointments/{id}":
+    put:
+      summary: Update existing appointment
+      tags:
+      - User
+      consumes:
+      - application/json
+      security:
+      - JWT: {}
+      parameters:
+      - name: id
+        in: path
+        type: integer
+        description: pass an id for the appointment
+        required: true
+      - name: appointment
+        in: body
+        schema:
+          type: object
+          description: appointment attributes to be updated
+          properties:
+            doctor_id:
+              type: integer
+            description:
+              type: string
+            appointment_date:
+              type: string
+            appointment_time:
+              type: string
+      responses:
+        '200':
+          description: appointment updated
+        '404':
+          description: record not found
+          schema:
+            "$ref": "#/definitions/not_found_error"
+  "/auth/login":
+    post:
+      summary: User Login
+      tags:
+      - Auth
+      consumes:
+      - application/json
+      parameters:
+      - name: credential
+        in: body
+        schema:
+          type: object
+          description: user login credential
+          properties:
+            username:
+              type: string
+            password:
+              type: string
+          required:
+          - username
+          - password
+      responses:
+        '200':
+          description: authentication successful
+          examples:
+            application/json:
+              username: john123
+              password: foobar
+        '401':
+          description: unauthorized access
+          schema:
+            "$ref": "#/definitions/invalid_request_error"
+  "/doctors":
+    get:
+      summary: Retrieves a list of doctors
+      tags:
+      - User
+      produces:
+      - application/json
+      security:
+      - JWT: {}
+      responses:
+        '200':
+          description: returns list of doctors
+          examples:
+            application/json:
+              id: 1
+              firstname: Jerry
+              lastname: Christian
+              email: jerry.c@bco.com
+              username: jerryC123
+              city: LA
+          schema:
+            type: array
+            items:
+              "$ref": "#/definitions/doctor"
+            required:
+            - id
+            - username
+            - email
+            - firstname
+            - lastname
+            - city
+  "/doctors/{id}":
+    get:
+      summary: Retrieves a doctor
+      tags:
+      - User
+      produces:
+      - application/json
+      security:
+      - JWT: {}
+      parameters:
+      - name: id
+        in: path
+        type: integer
+        description: pass an id for the doctor
+        required: true
+      responses:
+        '200':
+          description: doctor found
+          schema:
+            "$ref": "#/definitions/doctor"
+            required:
+            - id
+            - username
+            - email
+            - firstname
+            - lastname
+            - city
+        '404':
+          description: record not found
+          schema:
+            "$ref": "#/definitions/not_found_error"
+  "/doctors/{doctor_id}/appointments":
+    get:
+      summary: Retrieves a list of doctor's appointments
+      tags:
+      - Doctor
+      produces:
+      - application/json
+      security:
+      - JWT: {}
+      parameters:
+      - name: doctor_id
+        in: path
+        type: integer
+        description: retrieve all appointments belonging to this id
+        required: true
+      responses:
+        '200':
+          description: doctor's appointments found
+          schema:
+            type: array
+            items:
+              "$ref": "#/definitions/appointment"
+            required:
+            - id
+            - username
+            - email
+            - firstname
+            - lastname
+            - doctor_firstname
+            - doctor_lastname
+            - doctor_email
+            - date_of_appointment
+            - time_of_appointment
+            - description
+        '404':
+          description: record not found
+          schema:
+            "$ref": "#/definitions/not_found_error"
+  "/doctors/{doctor_id}/appointments/{id}":
+    get:
+      summary: Retrieves a single doctor's appointment
+      tags:
+      - Doctor
+      produces:
+      - application/json
+      security:
+      - JWT: {}
+      parameters:
+      - name: doctor_id
+        in: path
+        type: integer
+        description: the doctor's id
+        required: true
+      - name: id
+        in: path
+        type: integer
+        description: retrieve a single appointment with id belonging to doctor
+        required: true
+      responses:
+        '200':
+          description: doctor's appointment found
+          schema:
+            "$ref": "#/definitions/appointment"
+            required:
+            - id
+            - username
+            - email
+            - doctor_firstname
+            - doctor_lastname
+            - doctor_email
+            - date_of_appointment
+            - time_of_appointment
+            - description
+        '404':
+          description: record not found
+          schema:
+            "$ref": "#/definitions/not_found_error"
+  "/users/appointments":
+    get:
+      summary: Retrieves a list of users's appointments
+      tags:
+      - User
+      produces:
+      - application/json
+      security:
+      - JWT: {}
+      responses:
+        '200':
+          description: user appointments found
+          schema:
+            type: array
+            items:
+              "$ref": "#/definitions/appointment"
+            required:
+            - id
+            - username
+            - email
+            - firstname
+            - lastname
+            - doctor_firstname
+            - doctor_lastname
+            - doctor_email
+            - date_of_appointment
+            - time_of_appointment
+            - description
+        '422':
+          description: record not found
+          schema:
+            "$ref": "#/definitions/not_found_error"
+  "/users/appointments/{id}":
+    get:
+      summary: Retrieves a single user's appointment
+      tags:
+      - User
+      produces:
+      - application/json
+      security:
+      - JWT: {}
+      parameters:
+      - name: id
+        in: path
+        type: integer
+        description: appointment id belonging to user
+        required: true
+      responses:
+        '200':
+          description: user's appointment found
+          schema:
+            "$ref": "#/definitions/appointment"
+            required:
+            - id
+            - username
+            - email
+            - doctor_firstname
+            - doctor_lastname
+            - doctor_email
+            - date_of_appointment
+            - time_of_appointment
+            - description
+        '422':
+          description: record not found
+          schema:
+            "$ref": "#/definitions/not_found_error"
+  "/users/signup":
+    post:
+      summary: User signup
+      tags:
+      - Auth
+      consumes:
+      - application/json
+      parameters:
+      - name: credential
+        in: body
+        schema:
+          type: object
+          description: user signup credential
+          properties:
+            username:
+              type: string
+            email:
+              type: string
+            city:
+              type: string
+            firstname:
+              type: string
+            lastname:
+              type: string
+            password:
+              type: string
+          required:
+          - username
+          - email
+          - city
+          - firstname
+          - lastname
+          - password
+      responses:
+        '201':
+          description: signup successful
+          examples:
+            application/json:
+              username: john123
+              email: johnnny@kok.io
+              city: LA
+              firstname: john
+              lastname: harry
+              password: foobar
+        '422':
+          description: invalid request
+          schema:
+            "$ref": "#/definitions/invalid_request_error"
+basePath: "/api/v1"
+securityDefinitions:
+  JWT:
+    description: authorization scheme
+    name: Authorization
+    type: apiKey
+    in: header
+definitions:
+  doctor:
+    type: object
+    properties:
+      id:
+        type: integer
+      firstname:
+        type: string
+      lastname:
+        type: string
+      email:
+        type: string
+      username:
+        type: string
+      city:
+        type: string
+  appointment:
+    type: object
+    properties:
+      id:
+        type: integer
+      doctor_firstname:
+        type: string
+      doctor_lastname:
+        type: string
+      doctor_email:
+        type: string
+      username:
+        type: string
+      email:
+        type: string
+      firstname:
+        type: string
+      lastname:
+        type: string
+      date_of_appointment:
+        type: string
+      time_of_appointment:
+        type: string
+      description:
+        type: string
+  not_found_error:
+    type: object
+    properties:
+      message:
+        type: string
+  invalid_request_error:
+    type: object
+    properties:
+      message:
+        type: string
